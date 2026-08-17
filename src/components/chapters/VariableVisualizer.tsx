@@ -1,5 +1,5 @@
 import { useMemo, useState, useId } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import ChapterIntro from '../ui/ChapterIntro';
 import CodeBlock from '../ui/CodeBlock';
 import { EASE } from '../../lib/motion';
@@ -53,7 +53,6 @@ export default function VariableVisualizer() {
         <div id={`${uid}-title`}>
           <ChapterIntro
             index="01"
-            kicker="VARIABLES"
             titleLines={['WHAT ARE YOU', 'MADE OF?']}
             lede={
               <>
@@ -68,7 +67,7 @@ export default function VariableVisualizer() {
           {/* ── CONTROLS ── */}
           <div className="lg:col-span-5">
             <div className="mb-6 flex items-baseline justify-between">
-              <span className="eyebrow">DECLARATIONS</span>
+              <span className="panel-label">DECLARATIONS</span>
               <span className="font-mono text-micro text-mute">DRAG TO REASSIGN</span>
             </div>
 
@@ -88,7 +87,7 @@ export default function VariableVisualizer() {
                         className="font-mono text-[0.82rem] text-char"
                       >
                         {v.label}
-                        {isTime && <span className="ml-2 text-[0.67rem] uppercase tracking-[0.12em] text-mute">const</span>}
+                        {isTime && <span className="ml-2 text-micro uppercase tracking-[0.12em] text-mute">const</span>}
                       </label>
                       <span className={`font-mono text-[0.82rem] tabular-nums transition-colors ${
                         touched === v.key ? 'text-ember' : 'text-mute'}`}>
@@ -128,10 +127,9 @@ export default function VariableVisualizer() {
                                    hover:[&::-webkit-slider-thumb]:scale-125
                                    [&::-moz-range-thumb]:size-3.5 [&::-moz-range-thumb]:rounded-full
                                    [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-char"
-                        data-cursor="drag"
                       />
                     </div>
-                    <p id={`${uid}-${v.key}-hint`} className="mt-2 font-mono text-[0.66rem] leading-relaxed text-mute opacity-0 transition-opacity duration-300 group-focus-within:opacity-100 group-hover:opacity-100">
+                    <p id={`${uid}-${v.key}-hint`} className="mt-2 font-mono text-micro leading-relaxed text-mute opacity-0 transition-opacity duration-300 group-focus-within:opacity-100 group-hover:opacity-100">
                       // {v.hint}
                     </p>
                   </li>
@@ -152,7 +150,7 @@ export default function VariableVisualizer() {
             <div className="sticky top-28 space-y-5">
               <div className="relative overflow-hidden rounded-lg border border-line bg-surface/60 p-6 sm:p-8">
                 <div className="mb-6 flex items-center justify-between">
-                  <span className="eyebrow">RUNTIME STATE</span>
+                  <span className="panel-label">RUNTIME STATE</span>
                   <span className={`font-mono text-[0.74rem] uppercase tracking-[0.14em] ${stateColor}`}>
                     ● {state}
                   </span>
@@ -179,7 +177,7 @@ export default function VariableVisualizer() {
                             />
                           )}
                         </motion.div>
-                        <span className="origin-left -rotate-45 whitespace-nowrap font-mono text-[0.66rem] uppercase tracking-[0.08em] text-mute sm:rotate-0 sm:text-center sm:text-[0.66rem]">
+                        <span className="origin-left -rotate-45 whitespace-nowrap font-mono text-micro uppercase tracking-[0.08em] text-mute sm:rotate-0 sm:text-center sm:text-micro">
                           {v.label.slice(0, 4)}
                         </span>
                       </div>
