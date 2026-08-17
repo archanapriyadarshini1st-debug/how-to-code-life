@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useId } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import ChapterIntro from '../ui/ChapterIntro';
 import CodeBlock from '../ui/CodeBlock';
 import Button from '../ui/Button';
@@ -58,7 +58,6 @@ export default function LoopVisualizer() {
         <div id={`${uid}-t`}>
           <ChapterIntro
             index="03"
-            kicker="LOOPS"
             titleLines={['WHAT YOU REPEAT', 'BECOMES YOU.']}
             lede={<>A habit is just a function you keep calling until you forget you're the one calling it.</>}
           />
@@ -71,11 +70,11 @@ export default function LoopVisualizer() {
               <svg viewBox="0 0 320 320" className="size-full -rotate-90" role="img"
                    aria-label={`Loop diagram. Current stage: ${STEPS[active].label}`}>
                 {/* track */}
-                <circle cx={cx} cy={cy} r={R} fill="none" stroke="rgb(var(--c-line))" strokeWidth="1" />
+                <circle cx={cx} cy={cy} r={R} fill="none" stroke="var(--color-line)" strokeWidth="1" />
                 {/* progress arc */}
                 <motion.circle
                   cx={cx} cy={cy} r={R} fill="none"
-                  stroke="rgb(var(--c-ember))" strokeWidth="1.5" strokeLinecap="round"
+                  stroke="var(--color-ember)" strokeWidth="1.5" strokeLinecap="round"
                   strokeDasharray={2 * Math.PI * R}
                   animate={{ strokeDashoffset: 2 * Math.PI * R * (1 - (active + 1) / STEPS.length) }}
                   transition={{ duration: reduced ? 0 : 0.85, ease: EASE }}
@@ -94,13 +93,13 @@ export default function LoopVisualizer() {
                         initial={{ r: 5 }}
                         animate={{ r: cur ? 9 : 5 }}
                         transition={{ duration: 0.4, ease: EASE }}
-                        fill={on ? 'rgb(var(--c-ember))' : 'rgb(var(--c-paper))'}
-                        stroke={on ? 'rgb(var(--c-ember))' : 'rgb(var(--c-line))'}
+                        fill={on ? 'var(--color-ember)' : 'var(--color-paper)'}
+                        stroke={on ? 'var(--color-ember)' : 'var(--color-line)'}
                         strokeWidth="1.5"
                       />
                       {cur && !reduced && (
                         <motion.circle
-                          cx={x} cy={y} r={9} fill="none" stroke="rgb(var(--c-ember))" strokeWidth="1"
+                          cx={x} cy={y} r={9} fill="none" stroke="var(--color-ember)" strokeWidth="1"
                           initial={{ r: 9, opacity: 0.6 }}
                           animate={{ r: [9, 22], opacity: [0.6, 0] }}
                           transition={{ duration: 1.6, repeat: Infinity, ease: 'easeOut' }}
@@ -121,15 +120,14 @@ export default function LoopVisualizer() {
                   <button
                     key={s.key}
                     onClick={() => { setActive(i); setRunning(false); announce(`${s.label}: ${s.note}`); }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-2.5 py-1 font-mono text-[0.66rem] uppercase tracking-[0.12em] transition-all duration-300"
+                    className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-2.5 py-1 font-mono text-micro uppercase tracking-[0.12em] transition-all duration-300"
                     style={{
                       left: `${lx}%`, top: `${ly}%`,
-                      color: on ? 'rgb(var(--c-char))' : 'rgb(var(--c-mute))',
-                      background: on ? 'rgb(var(--c-paper))' : 'transparent',
+                      color: on ? 'var(--color-char)' : 'var(--color-mute)',
+                      background: on ? 'var(--color-paper)' : 'transparent',
                       fontWeight: on ? 500 : 400,
                     }}
                     aria-pressed={on}
-                    data-cursor="link"
                   >
                     {s.label}
                   </button>
@@ -142,7 +140,7 @@ export default function LoopVisualizer() {
                 <span className="font-sans text-[2.75rem] font-medium leading-none tabular-nums text-char">
                   {Math.round(count)}
                 </span>
-                <span className="mt-1 font-mono text-[0.67rem] uppercase tracking-[0.14em] text-ember">
+                <span className="mt-1 font-mono text-micro uppercase tracking-[0.14em] text-ember">
                   {running ? 'RUNNING' : 'PAUSED'}
                 </span>
               </div>
