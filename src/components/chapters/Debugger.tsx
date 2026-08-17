@@ -1,5 +1,5 @@
 import { useState, useMemo, useId, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import ChapterIntro from '../ui/ChapterIntro';
 import Button from '../ui/Button';
 import { Reveal } from '../ui/Reveal';
@@ -105,7 +105,6 @@ export default function Debugger() {
         <div id={`${uid}-t`}>
           <ChapterIntro
             index="05"
-            kicker="DEBUGGING"
             titleLines={["DON'T DELETE THE ERROR.", 'UNDERSTAND IT.']}
             size="compact"
             lede={<>Below is a small life algorithm. It compiles. It runs. It also quietly ruins decades. Find the three bugs.</>}
@@ -115,18 +114,18 @@ export default function Debugger() {
         <div className="mt-14 grid gap-6 lg:mt-18 lg:grid-cols-12 lg:gap-8">
           {/* ── EDITOR ── */}
           <div className="min-w-0 lg:col-span-7">
-            <div className="overflow-hidden rounded-lg border border-line bg-[#141311] shadow-raise">
+            <div className="overflow-hidden rounded-lg border border-line bg-[var(--color-code-bg)] shadow-raise">
               {/* chrome */}
-              <div className="flex items-center justify-between border-b border-[#2A2724] bg-[#1A1815] px-4 py-2.5">
+              <div className="flex items-center justify-between border-b border-[var(--color-code-line)] bg-[var(--color-code-panel)] px-4 py-2.5">
                 <div className="flex items-center gap-2.5">
                   <span className="flex gap-1.5" aria-hidden>
-                    <i className="size-2 rounded-full bg-[#3C3833]" />
-                    <i className="size-2 rounded-full bg-[#3C3833]" />
+                    <i className="size-2 rounded-full bg-[var(--color-code-edge)]" />
+                    <i className="size-2 rounded-full bg-[var(--color-code-edge)]" />
                     <i className="size-2 rounded-full bg-ember/70" />
                   </span>
-                  <span className="ml-1 font-mono text-micro tracking-[0.1em] text-[#8A847A]">improve.ts</span>
+                  <span className="ml-1 font-mono text-micro tracking-[0.1em] text-[var(--color-code-mute)]">improve.ts</span>
                 </div>
-                <span className="font-mono text-[0.66rem] uppercase tracking-[0.14em] text-[#6E6961]">
+                <span className="font-mono text-micro uppercase tracking-[0.14em] text-[var(--color-code-comment)]">
                   {solved.length}/{BUGS.length} PATCHED
                 </span>
               </div>
@@ -145,33 +144,31 @@ export default function Debugger() {
                             onClick={() => { setSelected(isSel ? null : i); setWrong(null); }}
                             disabled={isFixed}
                             aria-expanded={isSel}
-                            aria-label={`Line ${i + 1}${isFixed ? ', patched' : ', suspicious — inspect'}`}
+                            aria-label={`Line ${i + 1}${isFixed ? ', patched' : ', suspicious, inspect'}`}
                             className={`group flex w-full items-center gap-4 rounded-xs px-2 -mx-2 text-left transition-colors duration-300 ${
-                              isFixed ? 'cursor-default bg-[#9FBE8F]/[0.08]'
+                              isFixed ? 'cursor-default bg-[var(--color-code-string)]/[0.08]'
                                 : isSel ? 'bg-ember/[0.14]' : 'hover:bg-white/[0.05]'
                             }`}
-                            data-cursor={isFixed ? undefined : 'link'}
-                            data-cursor-label={isFixed ? undefined : 'INSPECT'}
                           >
-                            <span className={`w-5 shrink-0 select-none text-right text-[0.7rem] tabular-nums ${
-                              isFixed ? 'text-[#9FBE8F]' : 'text-ember'}`}>
+                            <span className={`w-5 shrink-0 select-none text-right text-micro tabular-nums ${
+                              isFixed ? 'text-[var(--color-code-string)]' : 'text-ember'}`}>
                               {i + 1}
                             </span>
-                            <span className={`min-w-0 flex-1 whitespace-pre ${isFixed ? 'text-[#C4CDB8]' : 'text-[#DDD8CE]'}`}>
+                            <span className={`min-w-0 flex-1 whitespace-pre ${isFixed ? 'text-[var(--color-code-string)]' : 'text-[var(--color-code-text)]'}`}>
                               {ln}
                             </span>
-                            <span aria-hidden className={`shrink-0 font-mono text-[0.66rem] uppercase tracking-[0.1em] transition-opacity ${
-                              isFixed ? 'text-[#9FBE8F]' : 'text-ember opacity-70 group-hover:opacity-100'}`}>
+                            <span aria-hidden className={`shrink-0 font-mono text-micro uppercase tracking-[0.1em] transition-opacity ${
+                              isFixed ? 'text-[var(--color-code-string)]' : 'text-ember opacity-70 group-hover:opacity-100'}`}>
                               {isFixed ? '✓ fixed' : '⚠ bug'}
                             </span>
                           </button>
                         ) : (
                           <div className="flex items-center gap-4 px-2 -mx-2">
-                            <span className="w-5 shrink-0 select-none text-right text-[0.7rem] tabular-nums text-[#4E4A44]">{i + 1}</span>
-                            <span className="whitespace-pre text-[#DDD8CE]">
+                            <span className="w-5 shrink-0 select-none text-right text-micro tabular-nums text-[var(--color-code-mute)]">{i + 1}</span>
+                            <span className="whitespace-pre text-[var(--color-code-text)]">
                               {ln.split(/(\bfunction\b|\breturn\b|\bif\b)/).map((p, j) =>
                                 /^(function|return|if)$/.test(p)
-                                  ? <span key={j} className="font-medium text-[#E08A54]">{p}</span>
+                                  ? <span key={j} className="font-medium text-[var(--color-code-keyword)]">{p}</span>
                                   : <span key={j}>{p}</span>)}
                             </span>
                           </div>
@@ -190,16 +187,16 @@ export default function Debugger() {
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: reduced ? 0 : 0.45, ease: EASE }}
-                    className="overflow-hidden border-t border-[#2A2724] bg-[#1A1815]"
+                    className="overflow-hidden border-t border-[var(--color-code-line)] bg-[var(--color-code-panel)]"
                   >
                     <div className="p-4 sm:p-6">
-                      <p className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-ember">
-                        line {current.line + 1} — diagnosis
+                      <p className="font-mono text-micro uppercase tracking-[0.14em] text-ember">
+                        line {current.line + 1} diagnosis
                       </p>
-                      <p className="mt-2.5 font-mono text-[0.78rem] leading-relaxed text-[#B8B2A7]">
+                      <p className="mt-2.5 font-mono text-[0.78rem] leading-relaxed text-[var(--color-code-text)]">
                         // {current.hint}
                       </p>
-                      <p className="mt-5 font-mono text-[0.64rem] uppercase tracking-[0.14em] text-[#6E6961]">
+                      <p className="mt-5 font-mono text-micro uppercase tracking-[0.14em] text-[var(--color-code-comment)]">
                         choose a patch
                       </p>
                       <div className="mt-3 space-y-2">
@@ -211,10 +208,9 @@ export default function Debugger() {
                                 onClick={() => pick(o, current)}
                                 className={`w-full rounded-md border px-4 py-3 text-left font-mono text-[0.76rem] transition-all duration-300 ${
                                   isWrong
-                                    ? 'border-ember/60 bg-ember/10 text-[#E8A882]'
-                                    : 'border-[#2F2C28] bg-[#141311] text-[#DDD8CE] hover:border-[#4A4640] hover:bg-[#191714]'
+                                    ? 'border-ember/60 bg-ember/10 text-[var(--color-code-number)]'
+                                    : 'border-[var(--color-code-edge)] bg-[var(--color-code-bg)] text-[var(--color-code-text)] hover:border-[var(--color-code-mute)] hover:bg-[var(--color-code-panel)]'
                                 }`}
-                                data-cursor="link"
                               >
                                 {o.text}
                               </button>
@@ -224,7 +220,7 @@ export default function Debugger() {
                                     initial={{ opacity: 0, height: 0 }}
                                     animate={{ opacity: 1, height: 'auto' }}
                                     exit={{ opacity: 0, height: 0 }}
-                                    className="overflow-hidden pl-4 pt-2 font-mono text-[0.7rem] leading-relaxed text-[#8A847A]"
+                                    className="overflow-hidden pl-4 pt-2 font-mono text-micro leading-relaxed text-[var(--color-code-mute)]"
                                   >
                                     ↳ {o.why}
                                   </motion.p>
@@ -240,26 +236,26 @@ export default function Debugger() {
               </AnimatePresence>
 
               {/* console */}
-              <div className="border-t border-[#2A2724] bg-[#0F0E0D] px-4 py-3.5 sm:px-6">
+              <div className="border-t border-[var(--color-code-line)] bg-[var(--color-code-bg)] px-4 py-3.5 sm:px-6">
                 <div className="flex items-center justify-between gap-4">
-                  <p className="min-w-0 truncate font-mono text-[0.72rem] text-[#6E6961]">
+                  <p className="min-w-0 truncate font-mono text-[0.72rem] text-[var(--color-code-comment)]">
                     {allSolved
-                      ? <span className="text-[#9FBE8F]">✓ 0 errors · improve() ready to run</span>
+                      ? <span className="text-[var(--color-code-string)]">✓ 0 errors · improve() ready to run</span>
                       : selected !== null
                         ? <>› inspecting line {selected + 1}…</>
                         : <>› {BUGS.length - solved.length} problem{BUGS.length - solved.length === 1 ? '' : 's'} found. click a flagged line.</>}
                   </p>
                   <div className="flex shrink-0 gap-2">
                     {solved.length > 0 && (
-                      <button onClick={reset} className="font-mono text-[0.67rem] uppercase tracking-[0.12em] text-[#6E6961] transition-colors hover:text-[#B8B2A7]">
+                      <button onClick={reset} className="font-mono text-micro uppercase tracking-[0.12em] text-[var(--color-code-comment)] transition-colors hover:text-[var(--color-code-text)]">
                         reset
                       </button>
                     )}
                     <button
                       onClick={() => { setRan(true); announce(allSolved ? 'improve() executed successfully.' : 'Cannot run. Bugs remain.'); }}
                       disabled={!allSolved}
-                      className={`rounded-full px-3.5 py-1.5 font-mono text-[0.67rem] uppercase tracking-[0.12em] transition-all ${
-                        allSolved ? 'bg-ember text-white hover:brightness-110' : 'cursor-not-allowed bg-[#232120] text-[#57534E]'
+                      className={`rounded-full px-3.5 py-1.5 font-mono text-micro uppercase tracking-[0.12em] transition-all ${
+                        allSolved ? 'bg-ember text-white hover:brightness-110' : 'cursor-not-allowed bg-[var(--color-code-line)] text-[var(--color-code-comment)]'
                       }`}
                     >
                       ▶ run
@@ -272,11 +268,11 @@ export default function Debugger() {
                     <motion.div
                       initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, ease: EASE }}
-                      className="mt-3 border-t border-[#232120] pt-3"
+                      className="mt-3 border-t border-[var(--color-code-line)] pt-3"
                     >
-                      <p className="font-mono text-[0.72rem] leading-relaxed text-[#9FBE8F]">
+                      <p className="font-mono text-[0.72rem] leading-relaxed text-[var(--color-code-string)]">
                         &gt; improve()<br />
-                        <span className="text-[#DDD8CE]">→ started. imperfectly. on time.</span>
+                        <span className="text-[var(--color-code-text)]">→ started. imperfectly. on time.</span>
                       </p>
                     </motion.div>
                   )}
@@ -289,13 +285,13 @@ export default function Debugger() {
           <aside className="min-w-0 lg:col-span-5">
             <div className="sticky top-28 space-y-6">
               <div className="rounded-lg border border-line bg-paper p-6 sm:p-7">
-                <span className="eyebrow">PROGRESS</span>
+                <span className="panel-label">PROGRESS</span>
                 <div className="mt-5 space-y-3">
                   {BUGS.map((b, i) => {
                     const done = solved.includes(b.line);
                     return (
                       <div key={b.line} className="flex items-center gap-3">
-                        <span className={`flex size-5 shrink-0 items-center justify-center rounded-full border text-[0.66rem] transition-colors ${
+                        <span className={`flex size-5 shrink-0 items-center justify-center rounded-full border text-micro transition-colors ${
                           done ? 'border-ember bg-ember text-white' : 'border-line text-mute'}`}>
                           {done ? '✓' : i + 1}
                         </span>
@@ -303,7 +299,7 @@ export default function Debugger() {
                           line {b.line + 1}
                         </span>
                         <span className="h-px flex-1 bg-line" />
-                        <span className="font-mono text-[0.67rem] uppercase tracking-[0.12em] text-mute">
+                        <span className="font-mono text-micro uppercase tracking-[0.12em] text-mute">
                           {done ? 'patched' : 'open'}
                         </span>
                       </div>
@@ -327,7 +323,7 @@ export default function Debugger() {
                   transition={{ duration: 0.5, ease: EASE }}
                   className="border-l-2 border-ember pl-6"
                 >
-                  <p className="font-display text-[1.5rem] italic leading-snug text-char sm:text-[1.75rem]">
+                  <p className="text-[1.5rem] italic leading-snug text-char sm:text-[1.75rem]">
                     {allSolved
                       ? 'The bug was never the code. It was the waiting.'
                       : "You don't need a new life. You need a better iteration."}
