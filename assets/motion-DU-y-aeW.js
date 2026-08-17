@@ -1,0 +1,1 @@
+var e=[.16,1,.3,1];({fast:.18,base:.42,slow:.9,cine:1.4}).slow;export{e as t};
