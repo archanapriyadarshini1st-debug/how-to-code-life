@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 
+/* Tailwind v4 infers its scan root from the git repo and honours .gitignore.
+   That inference is unreliable in CI (it produced a stylesheet with tokens but
+   zero utilities), so declare the source tree explicitly. */
+@source '../../index.html';
+@source '../**/*.{ts,tsx}';
+
 /* ══════════════════════════════════════════════════════════════════
    HOW TO CODE LIFE :)
    Tailwind v4 - CSS-first design system.
