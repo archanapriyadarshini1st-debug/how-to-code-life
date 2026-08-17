@@ -1,5 +1,5 @@
 import { useState, useId } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import ChapterIntro from '../ui/ChapterIntro';
 import CodeBlock from '../ui/CodeBlock';
 import { Reveal } from '../ui/Reveal';
@@ -30,7 +30,7 @@ const TREE: Record<NodeId, Node> = {
   safe: {
     id: 'safe',
     condition: 'while (waiting)',
-    prompt: 'Safe compiled fine. It always does. But the loop has no exit condition — and time keeps decrementing.',
+    prompt: 'Safe compiled fine. It always does. But the loop has no exit condition, and time keeps decrementing.',
     code: `while (waiting) {\n    scroll();\n    plan();\n    // never ships\n}`,
     options: [
       { label: 'keep_waiting()', call: 'wait', next: 'stuck' },
@@ -47,7 +47,7 @@ const TREE: Record<NodeId, Node> = {
   try: {
     id: 'try',
     condition: 'try { ... } catch (e)',
-    prompt: 'You ran it. Something will throw — that is expected behaviour, not a design flaw.',
+    prompt: 'You ran it. Something will throw. That is expected behaviour, not a design flaw.',
     code: `try {\n    begin();\n} catch (e) {\n    learn(e);\n    begin();\n}`,
     options: [
       { label: 'learn(e)', call: 'learn', next: 'grow', brave: true },
@@ -98,9 +98,8 @@ export default function ConditionTree() {
         <div id={`${uid}-t`}>
           <ChapterIntro
             index="02"
-            kicker="CONDITIONS"
             titleLines={['IF THIS,', 'THEN THAT.']}
-            lede={<>Every decision is a conditional. You are always executing one branch and abandoning another — the only question is whether you wrote the condition or inherited it.</>}
+            lede={<>Every decision is a conditional. You are always executing one branch and abandoning another. The only question is whether you wrote the condition or inherited it.</>}
           />
         </div>
 
@@ -109,7 +108,7 @@ export default function ConditionTree() {
           <div className="lg:col-span-7">
             <div className="rounded-lg border border-line bg-paper p-6 shadow-lift sm:p-9">
               <div className="mb-7 flex items-center justify-between border-b border-line pb-4">
-                <span className="eyebrow">BRANCH RUNNER</span>
+                <span className="panel-label">BRANCH RUNNER</span>
                 <span className="font-mono text-micro tabular-nums text-mute">
                   DEPTH {String(path.length).padStart(2, '0')}
                 </span>
@@ -156,7 +155,7 @@ export default function ConditionTree() {
                     <motion.p
                       initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                       transition={{ delay: 0.3, duration: 0.7 }}
-                      className="mt-8 border-l-2 border-ember pl-5 font-display text-[1.35rem] italic leading-snug text-char"
+                      className="mt-8 border-l-2 border-ember pl-5 text-[1.35rem] italic leading-snug text-char"
                     >
                       Both branches cost you something.<br />Only one of them pays you back.
                     </motion.p>
@@ -170,7 +169,7 @@ export default function ConditionTree() {
           <aside className="lg:col-span-5">
             <div className="sticky top-28">
               <div className="mb-5 flex items-center justify-between">
-                <span className="eyebrow">CALL STACK</span>
+                <span className="panel-label">CALL STACK</span>
                 {log.length > 0 && (
                   <button onClick={reset} className="font-mono text-micro uppercase tracking-[0.12em] text-mute link-line">
                     clear
@@ -200,7 +199,7 @@ export default function ConditionTree() {
                             {n.condition}
                           </p>
                           {log[i] && (
-                            <p className="mt-1 font-mono text-[0.66rem] text-mute/70">
+                            <p className="mt-1 font-mono text-micro text-mute/70">
                               → {log[i]}()
                             </p>
                           )}
