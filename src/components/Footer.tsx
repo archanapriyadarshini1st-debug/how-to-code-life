@@ -5,19 +5,19 @@ const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
   {
     title: 'CHAPTERS',
     links: [
-      { label: '01 — Variables', href: '#chapter-01' },
-      { label: '02 — Conditions', href: '#chapter-02' },
-      { label: '03 — Loops', href: '#chapter-03' },
-      { label: '04 — Errors', href: '#chapter-04' },
+      { label: 'Variables', href: '#chapter-01' },
+      { label: 'Conditions', href: '#chapter-02' },
+      { label: 'Loops', href: '#chapter-03' },
+      { label: 'Errors', href: '#chapter-04' },
     ],
   },
   {
-    title: '—',
+    title: 'Chapters',
     links: [
-      { label: '05 — Debugging', href: '#chapter-05' },
-      { label: '06 — Git', href: '#chapter-06' },
-      { label: '07 — Deploy', href: '#chapter-07' },
-      { label: '08 — Playground', href: '#playground' },
+      { label: 'Debugging', href: '#chapter-05' },
+      { label: 'Git', href: '#chapter-06' },
+      { label: 'Deploy', href: '#chapter-07' },
+      { label: 'Playground', href: '#playground' },
     ],
   },
 ];
@@ -26,7 +26,7 @@ export default function Footer() {
   const { scrollTo } = useSmoothScroll();
 
   return (
-    <footer id="about" className="relative bg-paper pb-10 pt-section" aria-label="Site footer">
+    <footer id="about" className="relative bg-paper pb-10 pt-section" data-act="dark" aria-label="Site footer">
       <div className="shell">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
           {/* identity */}
@@ -36,7 +36,7 @@ export default function Footer() {
                 HOW TO<br />CODE LIFE{' '}
                 <span className="inline-block text-ember">:)</span>
               </p>
-              <p className="mt-7 max-w-xs font-display text-[1.25rem] italic leading-snug text-ink/70">
+              <p className="mt-7 max-w-xs text-[1.25rem] italic leading-snug text-ink/70">
                 Built by curiosity.
                 <br />
                 Debugged by experience.
@@ -54,7 +54,7 @@ export default function Footer() {
           {COLUMNS.map((col, ci) => (
             <nav key={ci} className="lg:col-span-2" aria-label={ci === 0 ? 'Chapters' : 'More chapters'}>
               <Reveal delay={0.06 * ci}>
-                <p className="eyebrow mb-5">{col.title}</p>
+                <p className="panel-label mb-5">{col.title}</p>
                 <ul className="space-y-3">
                   {col.links.map((l) => (
                     <li key={l.href}>
@@ -75,9 +75,9 @@ export default function Footer() {
           {/* colophon */}
           <div className="lg:col-span-3">
             <Reveal delay={0.14}>
-              <p className="eyebrow mb-5">COLOPHON</p>
+              <p className="panel-label mb-5">COLOPHON</p>
               <ul className="space-y-3 font-mono text-[0.72rem] text-mute">
-                <li>Type — Inter Tight · Instrument Serif · JetBrains Mono</li>
+                <li>Set in Geist and Geist Mono</li>
                 <li>Built with React, Three.js, GSAP &amp; Lenis</li>
                 <li>Respects prefers-reduced-motion</li>
               </ul>
@@ -93,11 +93,11 @@ export default function Footer() {
 
         {/* baseline */}
         <div className="mt-20 flex flex-col gap-4 border-t border-line pt-7 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-mute">
-            © {new Date().getFullYear()} — no rights reserved. fork it.
+          <p className="font-mono text-micro uppercase tracking-[0.12em] text-mute">
+            © {new Date().getFullYear()} no rights reserved. Fork it.
           </p>
-          <p className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-mute">
-            <span className="text-ember">●</span> runtime: the present moment
+          <p className="font-mono text-micro uppercase tracking-[0.12em] text-mute">
+            Debugged by experience.
           </p>
         </div>
       </div>
