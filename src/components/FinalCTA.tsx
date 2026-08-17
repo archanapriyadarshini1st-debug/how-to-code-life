@@ -1,6 +1,7 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'motion/react';
 import Button from './ui/Button';
+import { Marquee } from './ui/Marquee';
 import { MaskLines, Reveal } from './ui/Reveal';
 import { useReducedMotion } from '../lib/hooks';
 import { useSmoothScroll } from '../lib/SmoothScroll';
@@ -24,22 +25,19 @@ export default function FinalCTA() {
       id="final"
       ref={ref}
       aria-labelledby="final-t"
-      className="relative w-full overflow-x-clip bg-char py-section text-paper grain"
+      className="relative w-full overflow-x-clip bg-paper py-section text-ink grain" data-act="dark"
     >
-      {/* marquee of aphorisms — the one place repetition is the point */}
-      <div className="relative mb-24 w-full max-w-full overflow-x-clip border-y border-white/10 py-5">
-        <motion.div
-          className="flex w-max gap-12 whitespace-nowrap will-change-transform"
-          animate={reduced ? {} : { x: ['0%', '-50%'] }}
-          transition={{ duration: 46, repeat: Infinity, ease: 'linear' }}
-        >
-          {[...LINES, ...LINES, ...LINES, ...LINES].map((l, i) => (
-            <span key={i} className="flex items-center gap-12 font-mono text-[0.76rem] uppercase tracking-[0.14em] text-paper/35">
+      {/* The one marquee on the page. Repetition IS the content here:
+          these are the lines you are meant to leave with. */}
+      <div className="relative mb-24 w-full max-w-full overflow-x-clip border-y border-line py-5">
+        <Marquee duration={52} repeat={3}>
+          {LINES.map((l, i) => (
+            <span key={i} className="flex items-center gap-12 font-mono text-[0.76rem] uppercase tracking-[0.14em] text-mute">
               {l}
-              <span aria-hidden className="text-ember">/</span>
+              <span className="text-ember">/</span>
             </span>
           ))}
-        </motion.div>
+        </Marquee>
       </div>
 
       <motion.div style={{ scale }} className="shell relative text-center">
@@ -47,11 +45,11 @@ export default function FinalCTA() {
           as="h2"
           id="final-t"
           lines={['LIFE DOESN’T', 'COME WITH', 'SOURCE CODE.']}
-          className="font-sans text-h1 font-medium uppercase leading-[0.9] text-paper"
+          className="font-sans text-h1 font-medium uppercase leading-[0.9] text-char"
         />
 
         <Reveal delay={0.25}>
-          <p className="mx-auto mt-12 font-display text-[clamp(1.6rem,4vw,3rem)] italic text-ember">
+          <p className="mx-auto mt-12 text-[clamp(1.6rem,4vw,3rem)] font-medium italic-emph text-ember">
             So write your own.
           </p>
         </Reveal>
@@ -64,7 +62,7 @@ export default function FinalCTA() {
             </Button>
             <button
               onClick={() => scrollTo('#top')}
-              className="font-mono text-micro uppercase tracking-[0.14em] text-paper/40 link-line"
+              className="font-mono text-micro uppercase tracking-[0.14em] text-mute link-line"
             >
               ↑ back to the top of the program
             </button>
@@ -73,7 +71,7 @@ export default function FinalCTA() {
 
         {/* closing terminal line */}
         <Reveal delay={0.45}>
-          <p className="mx-auto mt-20 max-w-md font-mono text-[0.72rem] leading-relaxed text-paper/30">
+          <p className="mx-auto mt-20 max-w-md font-mono text-[0.72rem] leading-relaxed text-char/30">
             <span className="text-ember">$</span> ./life --no-guarantees --run-anyway
             <br />
             <span className="inline-block pt-1">process started at {new Date().getFullYear()}. exit code: unknown.</span>
