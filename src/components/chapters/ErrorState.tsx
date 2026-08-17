@@ -1,5 +1,5 @@
 import { useState, useId } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { Reveal, MaskLines } from '../ui/Reveal';
 import Button from '../ui/Button';
 import { EASE } from '../../lib/motion';
@@ -48,10 +48,8 @@ function ErrorCard({ err, index, expanded, onToggle }: {
         onClick={onToggle}
         aria-expanded={expanded}
         className={`group relative block w-full overflow-hidden rounded-lg border p-6 text-left transition-all duration-500 sm:p-7 ${
-          expanded ? 'border-ember/50 bg-[#151311]' : 'border-white/10 bg-white/[0.025] hover:border-white/25'
+          expanded ? 'border-ember/50 bg-veil' : 'border-line bg-paper hover:border-line'
         }`}
-        data-cursor="link"
-        data-cursor-label={expanded ? 'CLOSE' : 'TRACE'}
       >
         {/* scanline sweep on hover */}
         {!reduced && (
@@ -66,13 +64,13 @@ function ErrorCard({ err, index, expanded, onToggle }: {
             <span className="font-mono text-micro uppercase tracking-[0.18em] text-ember">
               ERROR {err.code}
             </span>
-            <h3 className="mt-3 font-sans text-[1.35rem] font-medium leading-tight tracking-tight text-paper sm:text-[1.6rem]">
+            <h3 className="mt-3 font-sans text-[1.35rem] font-medium leading-tight tracking-tight text-char sm:text-[1.6rem]">
               {err.title}
             </h3>
           </div>
           <span
             aria-hidden
-            className={`mt-1 shrink-0 font-mono text-lg text-paper/40 transition-transform duration-500 ${expanded ? 'rotate-45' : ''}`}
+            className={`mt-1 shrink-0 font-mono text-lg text-mute transition-transform duration-500 ${expanded ? 'rotate-45' : ''}`}
           >
             +
           </span>
@@ -87,30 +85,30 @@ function ErrorCard({ err, index, expanded, onToggle }: {
               transition={{ duration: reduced ? 0 : 0.5, ease: EASE }}
               className="overflow-hidden"
             >
-              <div className="mt-6 border-t border-white/10 pt-5">
-                <p className="font-mono text-[0.64rem] uppercase tracking-[0.16em] text-paper/35">stack trace</p>
+              <div className="mt-6 border-t border-line pt-5">
+                <p className="font-mono text-micro uppercase tracking-[0.16em] text-mute">stack trace</p>
                 <ul className="mt-3 space-y-1.5">
                   {err.trace.map((t, i) => (
                     <motion.li
                       key={t}
                       initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.06 * i, duration: 0.4 }}
-                      className="font-mono text-[0.72rem] text-paper/50"
+                      className="font-mono text-[0.72rem] text-mute"
                     >
                       {t}
                     </motion.li>
                   ))}
                 </ul>
                 <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="font-display text-[1.5rem] italic text-ember">{err.verdict}</span>
-                  <span className="font-mono text-[0.78rem] text-paper/70">{err.fix}</span>
+                  <span className="text-[1.5rem] italic text-ember">{err.verdict}</span>
+                  <span className="font-mono text-[0.78rem] text-ink/75">{err.fix}</span>
                 </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <span aria-hidden className="mt-6 block font-mono text-[0.66rem] tabular-nums text-paper/20">
+        <span aria-hidden className="mt-6 block font-mono text-micro tabular-nums text-char/20">
           {String(index + 1).padStart(2, '0')} / {String(ERRORS.length).padStart(2, '0')}
         </span>
       </button>
@@ -126,7 +124,7 @@ export default function ErrorState() {
     <section
       id="chapter-04"
       aria-labelledby={`${uid}-t`}
-      className="relative overflow-hidden bg-char py-section text-paper grain"
+      className="relative overflow-hidden bg-surface py-section text-char"
     >
       <div className="shell relative">
         {/* Chapter intro, dark variant */}
@@ -136,19 +134,19 @@ export default function ErrorState() {
             <motion.span aria-hidden className="h-px bg-white/20"
               initial={{ width: 0 }} whileInView={{ width: 64 }} viewport={{ once: true }}
               transition={{ duration: 1, ease: EASE, delay: 0.1 }} />
-            <span className="font-mono text-micro uppercase tracking-[0.18em] text-paper/45">ERRORS</span>
+            <span className="font-mono text-micro uppercase tracking-[0.18em] text-mute">ERRORS</span>
           </Reveal>
 
           <MaskLines
             as="h2"
             lines={['ERRORS ARE PART', 'OF THE PROGRAM.']}
-            className="font-sans text-h2 font-medium uppercase text-paper"
+            className="font-sans text-h2 font-medium uppercase text-char"
             delay={0.05}
           />
 
           <Reveal delay={0.18}>
-            <p className="mt-8 max-w-prose text-lede text-paper/60">
-              Nobody ships clean on the first run. Every failure leaves a stack trace —
+            <p className="mt-8 max-w-prose text-lede text-ink/70">
+              Nobody ships clean on the first run. Every failure leaves a stack trace.
               and a stack trace is just instructions written in a language you were never taught to read.
             </p>
           </Reveal>
@@ -171,7 +169,7 @@ export default function ErrorState() {
         </div>
 
         {/* the turn */}
-        <div className="mt-20 grid gap-10 border-t border-white/10 pt-14 lg:grid-cols-12">
+        <div className="mt-20 grid gap-10 border-t border-line pt-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <Reveal>
               <p className="font-mono text-micro uppercase tracking-[0.18em] text-ember">RECOVERED</p>
@@ -181,10 +179,10 @@ export default function ErrorState() {
             <MaskLines
               as="p"
               lines={['A failure is a', 'measurement, not', 'a verdict.']}
-              className="font-display text-[clamp(1.8rem,3.4vw,3rem)] italic leading-[1.15] text-paper"
+              className="text-[clamp(1.8rem,3.4vw,3rem)] italic leading-[1.15] text-char"
             />
             <Reveal delay={0.2}>
-              <p className="mt-8 max-w-prose text-body text-paper/55">
+              <p className="mt-8 max-w-prose text-body text-char/55">
                 The program didn't stop because you're incapable. It stopped because it found
                 something it couldn't handle yet. That's the whole message. Read it, patch it, run it again.
               </p>
