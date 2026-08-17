@@ -1,12 +1,12 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { Reveal, MaskLines } from './ui/Reveal';
 import { useReducedMotion, useTilt } from '../lib/hooks';
 import { EASE } from '../lib/motion';
 
 /* The Rosetta stone: the whole metaphor, stated once, as a bento grid. */
 const MAP: { term: string; life: string; note: string; span: string }[] = [
-  { term: 'Variables',   life: 'choices',              note: 'Assigned young — mostly by other people. Reassignable at any time.', span: 'lg:col-span-5' },
+  { term: 'Variables',   life: 'choices',              note: 'Assigned young, mostly by other people. Reassignable at any time.', span: 'lg:col-span-5' },
   { term: 'Functions',   life: 'habits',               note: 'You call them so often you forgot they were written.', span: 'lg:col-span-4' },
   { term: 'Loops',       life: 'routines',             note: 'The shape of your week is the shape of your decade.', span: 'lg:col-span-3' },
 
@@ -38,7 +38,6 @@ function MapCard({ item, i, wide = false }: { item: typeof MAP[number]; i: numbe
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.8, ease: EASE, delay: (i % 4) * 0.06 }}
-      data-cursor="link"
     >
       {/* pointer-follow wash */}
       <span
@@ -47,16 +46,16 @@ function MapCard({ item, i, wide = false }: { item: typeof MAP[number]; i: numbe
         style={{ background: 'radial-gradient(400px circle at var(--mx,50%) var(--my,50%), rgba(199,88,36,0.07), transparent 60%)' }}
       />
       <div className="relative">
-        <span className="font-mono text-[0.67rem] uppercase tracking-[0.16em] text-mute">
+        <span className="font-mono text-micro uppercase tracking-[0.16em] text-mute">
           {String(i + 1).padStart(2, '0')}
         </span>
         <h3 className="mt-4 font-mono text-[0.95rem] text-char">{item.term}</h3>
         <div className="mt-2 flex items-center gap-2">
           <span aria-hidden className="font-mono text-[0.8rem] text-ember transition-transform duration-500 group-hover:translate-x-1">=</span>
-          <span className="font-display text-[1.35rem] italic leading-none text-char">{item.life}</span>
+          <span className="text-[1.35rem] italic leading-none text-char">{item.life}</span>
         </div>
       </div>
-      <p className={`relative font-mono text-[0.7rem] leading-relaxed text-mute ${wide ? 'mt-4 lg:mt-0 lg:max-w-sm lg:text-right' : 'mt-8'}`}>{item.note}</p>
+      <p className={`relative font-mono text-micro leading-relaxed text-mute ${wide ? 'mt-4 lg:mt-0 lg:max-w-sm lg:text-right' : 'mt-8'}`}>{item.note}</p>
     </motion.div>
   );
 }
@@ -73,11 +72,6 @@ export default function Concept() {
         {/* editorial two-column opener */}
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-5">
-            <Reveal className="mb-7 flex items-center gap-4">
-              <span className="font-mono text-micro tracking-[0.2em] text-ember">00</span>
-              <span aria-hidden className="h-px w-16 bg-line" />
-              <span className="eyebrow">THE CONCEPT</span>
-            </Reveal>
             <MaskLines
               as="h2"
               id="concept-t"
@@ -103,7 +97,7 @@ export default function Concept() {
                 </p>
               </Reveal>
               <Reveal delay={0.2}>
-                <p className="mt-9 border-l-2 border-ember pl-6 font-display text-[1.5rem] italic leading-snug text-char">
+                <p className="mt-9 border-l-2 border-ember pl-6 text-[1.5rem] italic leading-snug text-char">
                   Your habits are just functions you keep calling.
                 </p>
               </Reveal>
