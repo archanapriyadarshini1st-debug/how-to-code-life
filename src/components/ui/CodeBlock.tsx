@@ -18,17 +18,17 @@ function tokenize(line: string): ReactNode[] {
   let k = 0;
   while ((m = re.exec(body))) {
     const t = m[0];
-    let cls = 'text-[#DDD8CE]';
+    let cls = 'text-[var(--color-code-text)]';
     if (/^\s+$/.test(t)) { out.push(<span key={k++}>{t}</span>); continue; }
-    if (/^["'`]/.test(t)) cls = 'text-[#9FBE8F]';
-    else if (/^\d/.test(t)) cls = 'text-[#E2946A]';
-    else if (KEYWORDS.test(t)) cls = 'text-[#E08A54] font-medium';
-    else if (/^[A-Za-z_$][\w$]*$/.test(t) && body[re.lastIndex] === '(') cls = 'text-[#EFE9DE]';
-    else if (/^[{}()[\];,.]$/.test(t)) cls = 'text-[#7C766B]';
-    else if (/^[A-Za-z_$]/.test(t)) cls = 'text-[#C8C2B6]';
+    if (/^["'`]/.test(t)) cls = 'text-[var(--color-code-string)]';
+    else if (/^\d/.test(t)) cls = 'text-[var(--color-code-number)]';
+    else if (KEYWORDS.test(t)) cls = 'text-[var(--color-code-keyword)] font-medium';
+    else if (/^[A-Za-z_$][\w$]*$/.test(t) && body[re.lastIndex] === '(') cls = 'text-[var(--color-code-text)]';
+    else if (/^[{}()[\];,.]$/.test(t)) cls = 'text-[var(--color-code-mute)]';
+    else if (/^[A-Za-z_$]/.test(t)) cls = 'text-[var(--color-code-text)]';
     out.push(<span key={k++} className={cls}>{t}</span>);
   }
-  if (comment) out.push(<span key="c" className="text-[#6E6961] italic">{comment}</span>);
+  if (comment) out.push(<span key="c" className="text-[var(--color-code-comment)] italic">{comment}</span>);
   return out;
 }
 
@@ -50,22 +50,22 @@ export default function CodeBlock({
   const lines = useMemo(() => code.replace(/\n$/, '').split('\n'), [code]);
 
   const shell = tone === 'dark'
-    ? 'bg-[#141311] border-[#2A2724]'
+    ? 'bg-[var(--color-code-bg)] border-[var(--color-code-line)]'
     : 'bg-surface border-line';
-  const gutter = tone === 'dark' ? 'text-[#4E4A44]' : 'text-mute/60';
+  const gutter = tone === 'dark' ? 'text-[var(--color-code-mute)]' : 'text-mute/60';
 
   return (
     <figure className={`overflow-hidden rounded-lg border ${shell} ${className}`}>
       {filename && (
         <figcaption className={`flex items-center gap-2 border-b px-4 py-2.5 ${
-          tone === 'dark' ? 'border-[#2A2724] bg-[#1A1815]' : 'border-line bg-veil'}`}>
+          tone === 'dark' ? 'border-[var(--color-code-line)] bg-[var(--color-code-panel)]' : 'border-line bg-veil'}`}>
           <span className="flex gap-1.5" aria-hidden>
-            <i className="size-2 rounded-full bg-[#3C3833]" />
-            <i className="size-2 rounded-full bg-[#3C3833]" />
+            <i className="size-2 rounded-full bg-[var(--color-code-edge)]" />
+            <i className="size-2 rounded-full bg-[var(--color-code-edge)]" />
             <i className="size-2 rounded-full bg-ember/70" />
           </span>
           <span className={`ml-1.5 font-mono text-micro tracking-[0.1em] ${
-            tone === 'dark' ? 'text-[#8A847A]' : 'text-mute'}`}>
+            tone === 'dark' ? 'text-[var(--color-code-mute)]' : 'text-mute'}`}>
             {filename}
           </span>
         </figcaption>
@@ -78,7 +78,7 @@ export default function CodeBlock({
               className={`flex ${highlight.includes(i) ? (tone === 'dark' ? 'bg-ember/[0.09] -mx-4 px-4 sm:-mx-5 sm:px-5' : 'bg-ember/[0.07] -mx-4 px-4') : ''}`}
             >
               {showLines && (
-                <span className={`mr-4 hidden w-5 shrink-0 select-none text-right text-[0.7rem] tabular-nums sm:inline ${gutter}`}>
+                <span className={`mr-4 hidden w-5 shrink-0 select-none text-right text-micro tabular-nums sm:inline ${gutter}`}>
                   {i + 1}
                 </span>
               )}
