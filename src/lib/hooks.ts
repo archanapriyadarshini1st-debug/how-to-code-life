@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 
 /* ─────────────────────────────────────────────────────────────
-   prefers-reduced-motion — reactive, the whole site reads this
+   prefers-reduced-motion - reactive, the whole site reads this
    ───────────────────────────────────────────────────────────── */
 export function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState(() =>
@@ -38,7 +38,7 @@ export const useIsTablet = () => useMediaQuery('(min-width: 768px) and (max-widt
 export const useIsCoarse = () => useMediaQuery('(pointer: coarse)');
 
 /* ─────────────────────────────────────────────────────────────
-   Magnetic pointer attraction — physical button behaviour.
+   Magnetic pointer attraction - physical button behaviour.
    Disabled on touch + reduced motion. rAF-batched, GPU transform.
    ───────────────────────────────────────────────────────────── */
 export function useMagnetic<T extends HTMLElement>(strength = 0.32, radius = 90) {
