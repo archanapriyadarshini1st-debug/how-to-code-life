@@ -1,5 +1,5 @@
 import { useState, useId } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import ChapterIntro from '../ui/ChapterIntro';
 import { Reveal } from '../ui/Reveal';
 import { EASE } from '../../lib/motion';
@@ -15,7 +15,7 @@ const NODES: Node[] = [
   { v: 'v1.0', op: 'commit',   lane: 0, msg: 'initial commit',            detail: 'Someone else wrote most of this. Parents, school, hometown, luck. You inherited a codebase you did not choose.' },
   { v: 'v1.1', op: 'commit',   lane: 0, msg: 'add: first real opinion',   detail: 'The first line of code that was actually yours. Small. Badly formatted. Yours.' },
   { v: 'v1.2', op: 'branch',   lane: 1, msg: 'branch: the other path',    detail: 'You tried something that did not fit the main branch. Everyone called it a phase. It was a spike.' },
-  { v: 'v1.3', op: 'revert',   lane: 1, msg: 'revert: that whole year',   detail: 'You rolled it back. The commit is still in history — that is the point. Reverting is not deleting.' },
+  { v: 'v1.3', op: 'revert',   lane: 1, msg: 'revert: that whole year',   detail: 'You rolled it back. The commit is still in history. That is the point. Reverting is not deleting.' },
   { v: 'v1.4', op: 'merge',    lane: 0, msg: 'merge: what you learned',   detail: 'The failed branch shipped something after all. Conflicts resolved manually, as always.' },
   { v: 'v1.9', op: 'refactor', lane: 0, msg: 'refactor: same life, less noise', detail: 'No new features. You just deleted what was never working. This is the most underrated release.' },
   { v: 'v2.0', op: 'commit',   lane: 0, msg: 'release: a version you recognise', detail: 'Not a different person. The same person, better organised, with fewer apologies in the changelog.' },
@@ -47,10 +47,9 @@ export default function GitTimeline() {
         <div id={`${uid}-t`}>
           <ChapterIntro
             index="06"
-            kicker="GIT"
             titleLines={['YOU ARE ALLOWED', 'TO CHANGE YOUR VERSION.']}
             size="compact"
-            lede={<>Nobody ships v1.0 and calls it done. You are not stuck with the version you were handed — you are just behind on commits.</>}
+            lede={<>Nobody ships v1.0 and calls it done. You are not stuck with the version you were handed. You are just behind on commits.</>}
           />
         </div>
 
@@ -73,7 +72,7 @@ export default function GitTimeline() {
                   return (
                     <motion.path
                       key={i} d={d} fill="none"
-                      stroke={next.n.op === 'branch' || p.n.op === 'branch' ? 'rgb(var(--c-ember))' : 'rgb(var(--c-line))'}
+                      stroke={next.n.op === 'branch' || p.n.op === 'branch' ? 'var(--color-ember)' : 'var(--color-line)'}
                       strokeWidth="1.5"
                       strokeDasharray={p.n.op === 'revert' || next.n.op === 'revert' ? '4 4' : undefined}
                       initial={reduced ? undefined : { pathLength: 0 }}
@@ -92,7 +91,7 @@ export default function GitTimeline() {
                     <g key={p.i} transform={`translate(${p.x} ${p.y})`}>
                       {on && !reduced && (
                         <motion.circle
-                          r={9} fill="none" stroke="rgb(var(--c-ember))" strokeWidth="1"
+                          r={9} fill="none" stroke="var(--color-ember)" strokeWidth="1"
                           initial={{ r: 9, opacity: 0.7 }}
                           animate={{ r: [9, 20], opacity: [0.7, 0] }}
                           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
@@ -104,16 +103,16 @@ export default function GitTimeline() {
                         animate={{ r: on ? 8 : 6 }}
                         transition={{ duration: 0.35, ease: EASE }}
                         className={st.dot}
-                        fill={st.dot.includes('bg-char') ? 'rgb(var(--c-char))' : st.dot.includes('bg-ember') ? 'rgb(var(--c-ember))' : 'rgb(var(--c-paper))'}
-                        stroke={st.dot.includes('border-ember') ? 'rgb(var(--c-ember))' : st.dot.includes('border-mute') ? 'rgb(var(--c-mute))' : 'rgb(var(--c-char))'}
+                        fill={st.dot.includes('bg-char') ? 'var(--color-char)' : st.dot.includes('bg-ember') ? 'var(--color-ember)' : 'var(--color-paper)'}
+                        stroke={st.dot.includes('border-ember') ? 'var(--color-ember)' : st.dot.includes('border-mute') ? 'var(--color-mute)' : 'var(--color-char)'}
                         strokeWidth="2"
                       />
                       <text x={-18} y={4} textAnchor="end"
-                            className={`font-mono text-[11px] ${on ? 'fill-[rgb(var(--c-char))]' : 'fill-[rgb(var(--c-mute))]'}`}>
+                            className={`font-mono text-[11px] ${on ? 'fill-[var(--color-char)]' : 'fill-[var(--color-mute)]'}`}>
                         {p.n.v}
                       </text>
                       <text x={22} y={4}
-                            className={`font-mono text-[10.5px] uppercase ${on ? 'fill-[rgb(var(--c-ember))]' : 'fill-[rgb(var(--c-mute))]'}`}>
+                            className={`font-mono text-[10.5px] uppercase ${on ? 'fill-[var(--color-ember)]' : 'fill-[var(--color-mute)]'}`}>
                         {st.label}
                       </text>
                       {/* hit area */}
@@ -140,10 +139,9 @@ export default function GitTimeline() {
                       onClick={() => setOpen(i)}
                       aria-expanded={on}
                       className="group flex w-full items-baseline gap-4 py-4 text-left sm:gap-6"
-                      data-cursor="link"
                     >
                       <span className="w-9 shrink-0 font-mono text-[0.72rem] tabular-nums text-mute">{n.v}</span>
-                      <span className={`w-16 shrink-0 font-mono text-[0.67rem] uppercase tracking-[0.1em] ${st.text}`}>
+                      <span className={`w-16 shrink-0 font-mono text-micro uppercase tracking-[0.1em] ${st.text}`}>
                         {st.label}
                       </span>
                       <span className={`min-w-0 flex-1 font-mono text-[0.78rem] transition-colors ${on ? 'text-char' : 'text-mute group-hover:text-ink'}`}>
@@ -173,7 +171,7 @@ export default function GitTimeline() {
 
             <Reveal delay={0.1}>
               <div className="mt-12 border-l-2 border-ember pl-6 sm:pl-8">
-                <p className="font-display text-[clamp(1.5rem,2.6vw,2.25rem)] italic leading-[1.25] text-char">
+                <p className="text-[clamp(1.5rem,2.6vw,2.25rem)] italic leading-[1.25] text-char">
                   You don't need to become someone else.
                   <br />
                   Just keep committing.
