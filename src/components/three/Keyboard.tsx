@@ -70,7 +70,7 @@ function buildLayout(): KeyDef[] {
       });
     });
   });
-  // The YOU key — deliberately oversized, offset, unmissable.
+  // The YOU key - deliberately oversized, offset, unmissable.
   keys.push({
     id: 'you', label: 'YOU', row: 4, col: 0,
     x: -1.1, z: ((4 - (ROWS.length - 1) / 2) * PITCH),
@@ -106,7 +106,7 @@ function Keycap({
     // Phase 1 (0→.45): selected keys rise. Phase 2 (.45→1): disassembly.
     const rise = def.accent ? THREE.MathUtils.smoothstep(p, 0.05, 0.42) * 0.3 : 0;
     const ex = THREE.MathUtils.smoothstep(p, 0.45, 1);
-    // The YOU key resists the explosion — it stays.
+    // The YOU key resists the explosion - it stays.
     const exFactor = def.you ? 0.06 : 1;
 
     const press = pressed ? -0.09 : hovered ? 0.045 : 0;
@@ -205,7 +205,7 @@ function Board({ progress, transformed, onYou, reduced, quality }: {
         <RoundedBox args={[5.8, 0.06, 2.62]} radius={0.02} smoothness={2} position={[0, 0.15, 0]} receiveShadow>
           <meshStandardMaterial color={transformed ? '#2C2824' : '#B9B3A7'} roughness={0.7} metalness={0.5} />
         </RoundedBox>
-        {/* accent strip — the one bit of ember on the hardware */}
+        {/* accent strip - the one bit of ember on the hardware */}
         <mesh position={[0, 0.02, 1.44]}>
           <boxGeometry args={[6.05, 0.05, 0.02]} />
           <meshStandardMaterial color="#C75824" emissive="#C75824" emissiveIntensity={transformed ? 1.4 : 0.35} toneMapped={false} />
