@@ -23,7 +23,7 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: 'px-4 py-2.5 text-[0.68rem]',
+  sm: 'px-4 py-2.5 text-micro',
   md: 'px-6 py-3.5 text-label',
   lg: 'px-8 py-4 text-[0.8rem]',
 };
@@ -39,7 +39,6 @@ const Button = forwardRef<HTMLButtonElement, Props>(function Button(
       <button
         ref={ref}
         className={`btn ${variants[variant]} ${sizes[size]} group ${className}`}
-        data-cursor="link"
         {...rest}
       >
         <span className="relative z-10 flex items-center gap-2.5">{children}</span>
