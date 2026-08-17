@@ -1,13 +1,14 @@
 import { useState, useId, useMemo, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import CodeBlock from './ui/CodeBlock';
 import Button from './ui/Button';
 import ChapterIntro from './ui/ChapterIntro';
+import BuildSequence from './ui/BuildSequence';
 import { EASE } from '../lib/motion';
 import { useReducedMotion, useTypewriter, useAnnounce } from '../lib/hooks';
 
 /* ════════════════════════════════════════════════════════════
-   LIFE COMPILER — turns four honest sentences into pseudo-code.
+   LIFE COMPILER - turns four honest sentences into pseudo-code.
    Real transformation logic: verbs are extracted, inputs become
    identifiers, and the emitted program changes shape with them.
    ════════════════════════════════════════════════════════════ */
@@ -109,18 +110,17 @@ export default function LifeCompiler() {
       setCopied(true);
       announce('Copied to clipboard.');
       window.setTimeout(() => setCopied(false), 2000);
-    } catch { /* clipboard blocked — non-critical */ }
+    } catch { /* clipboard blocked - non-critical */ }
   };
 
   return (
-    <section id="playground" aria-labelledby={`${uid}-t`} className="relative bg-surface py-section">
+    <section id="playground" aria-labelledby={`${uid}-t`} className="relative bg-paper py-section" data-act="dark">
       <div className="shell">
         <div id={`${uid}-t`}>
           <ChapterIntro
             index="08"
-            kicker="PLAYGROUND"
             titleLines={['THE LIFE', 'COMPILER.']}
-            lede={<>Write four honest sentences. Get back the program you're actually running. It won't be profound — it'll just be true.</>}
+            lede={<>Write four honest sentences. Get back the program you're actually running. It will not be profound. It will just be true.</>}
           />
         </div>
 
@@ -132,7 +132,7 @@ export default function LifeCompiler() {
           >
             <div className="rounded-lg border border-line bg-paper p-6 shadow-lift sm:p-8">
               <div className="mb-7 flex items-center justify-between">
-                <span className="eyebrow">SOURCE INPUT</span>
+                <span className="panel-label">SOURCE INPUT</span>
                 <span className="font-mono text-micro tabular-nums text-mute">{filled}/4</span>
               </div>
 
@@ -143,7 +143,7 @@ export default function LifeCompiler() {
                       htmlFor={`${uid}-${m.key}`}
                       className="mb-2.5 flex items-baseline gap-2.5"
                     >
-                      <span className="font-mono text-[0.67rem] uppercase tracking-[0.14em] text-ember">{m.kw}</span>
+                      <span className="font-mono text-micro uppercase tracking-[0.14em] text-ember">{m.kw}</span>
                       <span className="font-mono text-[0.72rem] uppercase tracking-[0.12em] text-char">{m.label}</span>
                     </label>
                     <input
@@ -156,7 +156,7 @@ export default function LifeCompiler() {
                       onChange={(e) => setF((p) => ({ ...p, [m.key]: e.target.value }))}
                       aria-describedby={`${uid}-${m.key}-h`}
                     />
-                    <p id={`${uid}-${m.key}-h`} className="mt-2 font-mono text-[0.64rem] text-mute">
+                    <p id={`${uid}-${m.key}-h`} className="mt-2 font-mono text-micro text-mute">
                       // {m.help}
                     </p>
                   </div>
@@ -178,7 +178,7 @@ export default function LifeCompiler() {
                 )}
               </div>
 
-              <p className="mt-5 font-mono text-[0.66rem] leading-relaxed text-mute">
+              <p className="mt-5 font-mono text-micro leading-relaxed text-mute">
                 // Leave a field blank and the compiler fills in the honest default.
               </p>
             </div>
@@ -188,7 +188,7 @@ export default function LifeCompiler() {
           <div ref={outRef} className="min-w-0 lg:col-span-7">
             <div className="sticky top-28">
               <div className="mb-4 flex items-center justify-between">
-                <span className="eyebrow">OUTPUT — your.life.ts</span>
+                <span className="panel-label">your.life.ts</span>
                 {output && (
                   <button
                     onClick={copy}
@@ -199,7 +199,7 @@ export default function LifeCompiler() {
                 )}
               </div>
 
-              <div className="relative min-h-[26rem] overflow-hidden rounded-lg border border-line bg-[#141311]">
+              <div className="relative min-h-[26rem] overflow-hidden rounded-lg border border-line bg-veil">
                 <AnimatePresence mode="wait">
                   {building && (
                     <motion.div
@@ -207,19 +207,8 @@ export default function LifeCompiler() {
                       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                       className="absolute inset-0 flex flex-col items-center justify-center gap-4"
                     >
-                      <div className="flex gap-1.5">
-                        {[0, 1, 2].map((i) => (
-                          <motion.span
-                            key={i}
-                            className="size-1.5 rounded-full bg-ember"
-                            animate={reduced ? {} : { opacity: [0.25, 1, 0.25] }}
-                            transition={{ duration: 1, repeat: Infinity, delay: i * 0.16 }}
-                          />
-                        ))}
-                      </div>
-                      <p className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[#8A847A]">
-                        parsing your sentences
-                      </p>
+                      <BuildSequence lines={7} />
+                      <p className="panel-label">parsing your sentences</p>
                     </motion.div>
                   )}
 
@@ -229,10 +218,10 @@ export default function LifeCompiler() {
                       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                       className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center"
                     >
-                      <p className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-[#57534E]">
+                      <p className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-mute">
                         awaiting input
                       </p>
-                      <p className="mt-4 max-w-xs font-display text-[1.35rem] italic leading-snug text-[#8A847A]">
+                      <p className="mt-4 max-w-xs text-[1.35rem] italic leading-snug text-mute">
                         Every program starts with someone deciding to type something.
                       </p>
                       <span aria-hidden className="mt-6 inline-block h-4 w-2 bg-ember animate-blink" />
