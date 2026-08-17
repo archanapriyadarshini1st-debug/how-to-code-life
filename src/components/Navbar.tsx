@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
 import { EASE } from '../lib/motion';
 import { useSmoothScroll } from '../lib/SmoothScroll';
 import { useScrollLock, useMagnetic } from '../lib/hooks';
@@ -26,14 +26,14 @@ export default function Navbar() {
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     setCondensed(y > 60);
-    // hide on scroll-down, reveal on scroll-up — never traps the user
+    // hide on scroll-down, reveal on scroll-up - never traps the user
     if (!open) setHidden(y > 420 && y > last.current && y - last.current > 4);
     last.current = y;
   });
 
   // Scroll-spy. IntersectionObserver alone is ambiguous when several
   // sections straddle the viewport, so we pick the one covering a fixed
-  // probe line — deterministic, and it matches what the user is reading.
+  // probe line - deterministic, and it matches what the user is reading.
   useEffect(() => {
     const ids = ['concept', 'stages', 'playground', 'about'];
     let raf = 0;
@@ -116,19 +116,19 @@ export default function Navbar() {
             href="#top"
             onClick={(e) => { e.preventDefault(); go('#top'); }}
             className="group relative flex items-center gap-3 rounded-sm"
-            aria-label="How to code life — back to top"
+            aria-label="How to code life, back to top"
           >
             <motion.span
               animate={{ scale: condensed ? 0.9 : 1 }}
               transition={{ duration: 0.45, ease: EASE }}
-              className={`origin-left font-mono text-[0.66rem] font-medium uppercase leading-[1.25] tracking-[0.1em] transition-colors duration-500 ${onDark ? 'text-paper' : 'text-char'}`}
+              className={`origin-left font-mono text-micro font-medium uppercase leading-[1.25] tracking-[0.1em] transition-colors duration-500 ${onDark ? 'text-paper' : 'text-char'}`}
             >
               HOW TO<br />CODE LIFE{' '}
               <span className="inline-block text-ember transition-transform duration-500 ease-spring group-hover:rotate-[18deg]">:)</span>
             </motion.span>
           </a>
 
-          {/* DESKTOP LINKS — pill container that materialises on scroll */}
+          {/* DESKTOP LINKS - pill container that materialises on scroll */}
           <div className="hidden items-center gap-1 md:flex">
             <motion.div
               className="flex items-center gap-1 rounded-full border px-1.5 py-1.5 transition-colors duration-500"
@@ -151,7 +151,6 @@ export default function Navbar() {
                     onClick={(e) => { e.preventDefault(); go(l.href); }}
                     aria-current={on ? 'true' : undefined}
                     className="relative rounded-full px-4 py-2 font-mono text-micro uppercase tracking-[0.12em] transition-colors duration-300"
-                    data-cursor="link"
                   >
                     {on && (
                       <motion.span
@@ -172,8 +171,7 @@ export default function Navbar() {
               <a
                 href="#chapter-05"
                 onClick={(e) => { e.preventDefault(); go('#chapter-05'); }}
-                className={`btn group px-5 py-2.5 text-[0.68rem] ${onDark ? 'btn-ember' : 'btn-primary'}`}
-                data-cursor="link"
+                className={`btn group px-5 py-2.5 text-micro ${onDark ? 'btn-ember' : 'btn-primary'}`}
               >
                 START DEBUGGING
                 <span aria-hidden className="transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
@@ -207,7 +205,7 @@ export default function Navbar() {
         </nav>
       </motion.header>
 
-      {/* MOBILE SHEET — designed for mobile, not a shrunken desktop nav */}
+      {/* MOBILE SHEET - designed for mobile, not a shrunken desktop nav */}
       <AnimatePresence>
         {open && (
           <motion.div
