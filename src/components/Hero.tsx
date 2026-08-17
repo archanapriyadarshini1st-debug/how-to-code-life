@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'motion/react';
 import Button from './ui/Button';
 import { EASE } from '../lib/motion';
-import { useReducedMotion, useIsMobile, useTypewriter, useAnnounce } from '../lib/hooks';
+import { useReducedMotion, useTypewriter, useAnnounce } from '../lib/hooks';
 import { useSmoothScroll } from '../lib/SmoothScroll';
 
 const Keyboard = lazy(() => import('./three/Keyboard'));
@@ -16,7 +16,6 @@ const LIFE_CODE = `const life = {
 
 export default function Hero() {
   const reduced = useReducedMotion();
-  const isMobile = useIsMobile();
   const { scrollTo } = useSmoothScroll();
   const announce = useAnnounce();
   const sectionRef = useRef<HTMLElement>(null);
@@ -91,11 +90,8 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.15 }}
               className="mb-8 flex flex-wrap items-center gap-3"
             >
-              <span className="relative flex size-1.5">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-ember opacity-60" style={{ animationDuration: '2.4s' }} />
-                <span className="relative inline-flex size-1.5 rounded-full bg-ember" />
-              </span>
-              <span className="eyebrow">RUNTIME · THE PRESENT MOMENT</span>
+              <span aria-hidden className="h-px w-8 bg-ember" />
+              <span className="panel-label">Runtime: the present moment</span>
             </motion.div>
 
             <h1 className="font-sans text-h1 font-medium uppercase text-char">
@@ -108,7 +104,7 @@ export default function Hero() {
                     transition={{ duration: 1.2, ease: EASE, delay: 0.2 + i * 0.1 }}
                   >
                     {i === 1 ? (
-                      <>IS <span className="font-display italic normal-case tracking-[-0.02em] text-ember">code</span>.</>
+                      <>IS <span className="italic normal-case tracking-[-0.02em] text-ember">code</span>.</>
                     ) : line}
                   </motion.span>
                 </span>
@@ -130,8 +126,8 @@ export default function Hero() {
               transition={{ duration: 1, ease: EASE, delay: 0.8 }}
               className="mt-10 max-w-sm"
             >
-              <div className="rounded-lg border border-line bg-[#141311] p-4 shadow-lift sm:p-5">
-                <pre className="overflow-x-auto font-mono text-[0.78rem] leading-[1.85] text-[#DDD8CE] sm:text-[0.82rem]">
+              <div className="rounded-lg border border-line bg-[var(--color-code-bg)] p-4 shadow-lift sm:p-5">
+                <pre className="overflow-x-auto font-mono text-[0.78rem] leading-[1.85] text-[var(--color-code-text)] sm:text-[0.82rem]">
                   <code>
                     {typed.split('\n').map((ln, i, arr) => (
                       <div key={i} className="whitespace-pre">
@@ -140,8 +136,8 @@ export default function Hero() {
                           .split('\u0000')
                           .map((part, j) =>
                             part === 'const'
-                              ? <span key={j} className="font-medium text-[#E08A54]">{part}</span>
-                              : <span key={j} className={/^\s*(choices|habits|failures|dreams),?$/.test(part) ? 'text-[#C8C2B6]' : ''}>{part}</span>,
+                              ? <span key={j} className="font-medium text-[var(--color-code-keyword)]">{part}</span>
+                              : <span key={j} className={/^\s*(choices|habits|failures|dreams),?$/.test(part) ? 'text-[var(--color-code-text)]' : ''}>{part}</span>,
                           )}
                         {i === arr.length - 1 && (
                           <span className="ml-px inline-block h-[1.05em] w-[0.52em] translate-y-[0.16em] bg-ember animate-blink" />
@@ -164,8 +160,7 @@ export default function Hero() {
                 <span aria-hidden className="transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
               </Button>
               <Button variant="ghost" onClick={() => scrollTo('#stages')}>
-                SCROLL TO DEBUG
-                <span aria-hidden className="transition-transform duration-300 ease-out group-hover:translate-y-0.5">↓</span>
+                READ THE CONCEPT
               </Button>
             </motion.div>
           </div>
@@ -179,10 +174,8 @@ export default function Hero() {
           onClick={onYou}
           aria-pressed={transformed}
           className="group flex items-center gap-3 rounded-full border border-line bg-paper/85 px-4 py-2.5 backdrop-blur transition-colors hover:border-char/30"
-          data-cursor="key"
-          data-cursor-label="PRESS"
         >
-          <kbd className={`rounded-xs px-2 py-1 font-mono text-[0.67rem] tracking-[0.1em] shadow-key transition-colors ${
+          <kbd className={`rounded-xs px-2 py-1 font-mono text-micro tracking-[0.1em] shadow-key transition-colors ${
             transformed ? 'bg-ember text-white' : 'bg-char text-paper'}`}>
             YOU
           </kbd>
@@ -192,24 +185,6 @@ export default function Hero() {
         </button>
       </div>
 
-      {/* scroll indicator */}
-      {!isMobile && (
-        <motion.div
-          aria-hidden
-          className="absolute bottom-8 left-gutter z-20 hidden items-center gap-3 lg:flex"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }}
-          style={{ opacity: useTransform(scrollYProgress, [0, 0.15], [1, 0]) }}
-        >
-          <span className="relative h-10 w-px overflow-hidden bg-line">
-            <motion.span
-              className="absolute inset-x-0 top-0 h-3 bg-ember"
-              animate={reduced ? {} : { y: ['-100%', '400%'] }}
-              transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          </span>
-          <span className="font-mono text-micro uppercase tracking-[0.16em] text-mute">scroll</span>
-        </motion.div>
-      )}
     </section>
   );
 }
